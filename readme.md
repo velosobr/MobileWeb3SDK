@@ -8,8 +8,8 @@
 </p>
 
 <p align="center">
-  <b>Simplify Web3 integration in your Android apps.</b><br/>
-  Connect wallets, read smart contracts, and implement token gating — all with a few lines of Kotlin.
+  <b>A lightweight blockchain reading toolkit for Android.</b><br/>
+  Connect wallets, check balances, read smart contracts, and implement token gating — all with a few lines of Kotlin.
 </p>
 
 ---
@@ -48,6 +48,8 @@ if (hasAccess) showVipContent() else showPaywall()
 ```
 
 **That's it.** No ABI parsing, no RPC configuration, no Web3 expertise required.
+
+> **Note:** This SDK focuses on **read operations** (checking balances, reading contracts, verifying ownership). Transaction signing and write operations are planned for future versions.
 
 ---
 
@@ -292,13 +294,58 @@ MobileWeb3SDK.init(context) {
 
 ---
 
-## 🔐 Token Gating Use Cases
+## 💡 Real-World Use Cases
 
-- **Membership access** — Exclusive content for token holders
-- **Premium features** — Unlock app features with tokens
-- **NFT communities** — Verify NFT ownership
-- **Early access** — Beta features for supporters
-- **Loyalty programs** — Rewards based on token balance
+This SDK is a **blockchain reading toolkit** — not just for token gating. Here are practical applications for each feature:
+
+### 🔐 Token Gating (`checkAccess`, `verifyAccess`)
+
+| Use Case | Description |
+|----------|-------------|
+| **VIP Membership** | Exclusive content/features for NFT holders |
+| **DAO Access** | Gate community features based on governance token holdings |
+| **Event Tickets** | Verify NFT ticket ownership for entry |
+| **Subscription Tiers** | Different access levels based on token quantity |
+| **Loyalty Programs** | Rewards and discounts for token holders |
+
+### 💰 Native Balance (`getNativeBalance`)
+
+| Use Case | Description |
+|----------|-------------|
+| **Gas Check** | Verify user has enough POL/ETH before attempting transactions |
+| **Airdrop Eligibility** | Require minimum balance to prevent sybil attacks |
+| **Whale Detection** | Tiered features based on holdings (whale vs retail) |
+| **Anti-Bot Measures** | Require minimum stake to access features |
+| **Portfolio Display** | Show native token balance in wallet UI |
+
+### 👛 Wallet Connection (`connect`, `disconnect`)
+
+| Use Case | Description |
+|----------|-------------|
+| **Web3 Login** | Authenticate users via their wallet (no passwords) |
+| **Portfolio Tracker** | Connect wallet to display all holdings |
+| **DeFi Dashboard** | View positions across protocols |
+| **NFT Gallery** | Personal collection viewer |
+| **Transaction History** | Display user's blockchain activity |
+
+### 📖 Contract Reading (`erc20`, `erc721`, `ContractReader`)
+
+| Use Case | Description |
+|----------|-------------|
+| **Token Balances** | Display ERC-20 balances in-app |
+| **NFT Collections** | Show owned NFTs with metadata |
+| **Price Feeds** | Read from oracle contracts (Chainlink, etc.) |
+| **Governance Info** | Display voting power, proposals |
+| **Game Assets** | Read player inventory from blockchain |
+
+### 🔧 Raw RPC & ABI Encoding (`rpcProvider`, `AbiEncoder`)
+
+| Use Case | Description |
+|----------|-------------|
+| **Custom Contracts** | Interact with any smart contract |
+| **Analytics** | Build blockchain data dashboards |
+| **Monitoring** | Watch contract events and state changes |
+| **Multi-protocol** | Integrate with any DeFi protocol |
 
 ---
 
