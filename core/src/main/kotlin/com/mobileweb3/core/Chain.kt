@@ -2,6 +2,12 @@ package com.mobileweb3.core
 
 /**
  * Redes blockchain suportadas pelo SDK
+ * 
+ * Cada chain tem suas próprias configurações:
+ * - chainId: identificador único da rede
+ * - rpcUrl: endpoint para comunicação com a blockchain
+ * - explorerUrl: site para visualizar transações
+ * - currencySymbol: símbolo da moeda nativa
  */
 sealed class Chain(
     val chainId: Int,
@@ -10,29 +16,32 @@ sealed class Chain(
     val explorerUrl: String,
     val currencySymbol: String
 ) {
-    /** Polygon Mainnet */
+    /** Polygon Mainnet - rede de produção */
     data object Polygon : Chain(
         chainId = 137,
         name = "Polygon",
         rpcUrl = "https://polygon-rpc.com",
         explorerUrl = "https://polygonscan.com",
-        currencySymbol = "MATIC"
+        currencySymbol = "POL"
     )
 
-    /** Polygon Mumbai Testnet */
-    data object PolygonMumbai : Chain(
-        chainId = 80001,
-        name = "Polygon Mumbai",
-        rpcUrl = "https://rpc-mumbai.maticvigil.com",
-        explorerUrl = "https://mumbai.polygonscan.com",
-        currencySymbol = "MATIC"
+    /** 
+     * Polygon Amoy Testnet - rede de testes
+     * Substitui a antiga Mumbai (descontinuada em 2024)
+     */
+    data object PolygonAmoy : Chain(
+        chainId = 80002,
+        name = "Polygon Amoy",
+        rpcUrl = "https://rpc-amoy.polygon.technology",
+        explorerUrl = "https://amoy.polygonscan.com",
+        currencySymbol = "POL"
     )
 
     companion object {
         /** Retorna Chain pelo chainId */
         fun fromChainId(chainId: Int): Chain? = when (chainId) {
             137 -> Polygon
-            80001 -> PolygonMumbai
+            80002 -> PolygonAmoy
             else -> null
         }
     }

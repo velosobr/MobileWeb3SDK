@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.mobileweb3.contracts"
+    namespace = "com.mobileweb3.sdk"
     compileSdk = 34
 
     defaultConfig {
@@ -22,13 +22,16 @@ android {
 }
 
 dependencies {
-    // Depende de core e utils
+    // O módulo sdk agrega todos os outros
     api(project(":core"))
+    api(project(":contracts"))
+    api(project(":wallet"))
     api(project(":utils"))
 
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
-    // Web3j (mínimo, só para ABI encoding)
-    implementation("org.web3j:core:4.9.8")
+    // JSON serialization (para acessar JsonElement do RpcProvider)
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 }

@@ -1,5 +1,6 @@
 package com.mobileweb3.contracts
 
+import com.mobileweb3.utils.Keccak256
 import java.math.BigInteger
 
 /**
@@ -13,8 +14,8 @@ object AbiEncoder {
      * Ex: "balanceOf(address)" -> "0x70a08231"
      */
     fun encodeFunctionSelector(signature: String): String {
-        val hash = org.web3j.crypto.Hash.sha3String(signature)
-        return hash.substring(0, 10) // 0x + 8 chars = 4 bytes
+        val hash = Keccak256.hash(signature)
+        return "0x" + hash.substring(0, 8) // 4 bytes = 8 hex chars
     }
 
     /**

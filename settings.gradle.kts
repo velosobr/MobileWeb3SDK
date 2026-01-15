@@ -17,8 +17,12 @@ dependencyResolutionManagement {
 
 rootProject.name = "MobileWeb3SDK"
 
-include(":core")
-include(":wallet")
-include(":contracts")
-include(":utils")
+// Módulos da biblioteca
+include(":utils")      // Base: helpers, conversões
+include(":core")       // Fundação: config, RPC, tipos
+include(":contracts")  // Contratos: ERC20, ERC721, Token Gating
+include(":wallet")     // Wallet: WalletConnect
+include(":sdk")        // Facade: agrega tudo em API simples
+
+// App de demonstração
 include(":sample")

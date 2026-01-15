@@ -9,7 +9,6 @@ android {
 
     defaultConfig {
         minSdk = 24
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     compileOptions {
@@ -23,16 +22,16 @@ android {
 }
 
 dependencies {
+    // Core depende apenas de utils (sem ciclos)
     api(project(":utils"))
-    api(project(":contracts"))
-    api(project(":wallet"))
+    
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-
-    // OkHttp para RPC calls
+    
+    // OkHttp para chamadas RPC
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
-
-    // JSON
+    
+    // JSON serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 }

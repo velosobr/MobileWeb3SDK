@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$/contracts" />
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/sample" />
+            <option value="$PROJECT_DIR$/sdk" />
             <option value="$PROJECT_DIR$/utils" />
             <option value="$PROJECT_DIR$/wallet" />
           </set>

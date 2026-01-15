@@ -20,7 +20,7 @@ object AddressUtils {
     fun format(address: String, prefixLength: Int = 6, suffixLength: Int = 4): String {
         if (!isValid(address)) return address
         if (address.length <= prefixLength + suffixLength) return address
-        
+
         return "${address.take(prefixLength)}...${address.takeLast(suffixLength)}"
     }
 
@@ -36,10 +36,10 @@ object AddressUtils {
      */
     fun toChecksumAddress(address: String): String {
         if (!isValid(address)) return address
-        
+
         val lowercaseAddress = address.lowercase().removePrefix("0x")
-        val hash = keccak256(lowercaseAddress.toByteArray()).toHexString()
-        
+        val hash = Keccak256.hash(lowercaseAddress.toByteArray())
+
         val checksumAddress = StringBuilder("0x")
         for (i in lowercaseAddress.indices) {
             val char = lowercaseAddress[i]
@@ -50,7 +50,7 @@ object AddressUtils {
                 checksumAddress.append(if (hashChar >= 8) char.uppercaseChar() else char)
             }
         }
-        
+
         return checksumAddress.toString()
     }
 }
