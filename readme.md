@@ -58,7 +58,8 @@ if (hasAccess) showVipContent() else showPaywall()
 | **Wallet Connection** | ✅ | WalletConnect v2 integration |
 | **Token Gating** | ✅ | ERC-20 and ERC-721 support |
 | **Contract Reading** | ✅ | Type-safe contract calls |
-| **Multi-chain** | ✅ | Polygon, Mumbai testnet |
+| **Multi-chain** | ✅ | Polygon, Amoy testnet |
+| **Native Balance** | ✅ | Check POL/ETH balance |
 | **Kotlin-first** | ✅ | Coroutines, DSL builders |
 
 ---
@@ -97,7 +98,7 @@ class MyApp : Application() {
         super.onCreate()
         
         MobileWeb3SDK.init(this) {
-            chain = Chain.PolygonMumbai  // or Chain.Polygon for mainnet
+            chain = Chain.PolygonAmoy  // or Chain.Polygon for mainnet
             projectId = "your-walletconnect-project-id"
             enableLogging = BuildConfig.DEBUG
             
@@ -167,7 +168,18 @@ when (result) {
 }
 ```
 
-### 4. Read Token Data
+### 4. Check Native Balance (POL/ETH)
+
+```kotlin
+// Get native token balance (POL on Polygon, ETH on Ethereum)
+val balanceWei = sdk.getNativeBalance(walletAddress)
+
+// Convert to human-readable format
+val balancePol = balanceWei.toBigDecimal().divide(BigDecimal.TEN.pow(18))
+println("Balance: $balancePol POL")
+```
+
+### 5. Read Token Data
 
 ```kotlin
 // ERC-20 tokens
@@ -193,11 +205,10 @@ val owner = nft.ownerOf(tokenId)
                         │
                         ▼
 ┌─────────────────────────────────────────────────┐
-│              MobileWeb3SDK (Facade)              │
+│                sdk (Main Facade)                 │
 ├─────────────────────────────────────────────────┤
 │  ┌─────────┐  ┌──────────┐  ┌───────┐  ┌─────┐ │
-│  │ Wallet  │  │ Contracts│  │ Core  │  │Utils│ │
-│  │ Module  │  │  Module  │  │Module │  │     │ │
+│  │ wallet  │  │ contracts│  │ core  │  │utils│ │
 │  └─────────┘  └──────────┘  └───────┘  └─────┘ │
 └─────────────────────────────────────────────────┘
                         │
@@ -213,23 +224,28 @@ val owner = nft.ownerOf(tokenId)
 
 | Module | Purpose |
 |--------|---------|
-| `core` | SDK initialization, configuration, RPC provider |
+| `sdk` | Main facade - single entry point for all SDK features |
+| `core` | Configuration, RPC provider, chain definitions |
 | `wallet` | WalletConnect integration, session management |
-| `contracts` | ERC-20, ERC-721, token gating logic |
-| `utils` | Address formatting, unit conversions |
+| `contracts` | ERC-20, ERC-721, ABI encoding, token gating |
+| `utils` | Keccak256, address validation, hex utilities |
 
 ---
 
 ## 📱 Demo App
 
-The repository includes a sample app demonstrating token gating:
+The repository includes a sample app demonstrating token gating with native POL balance:
 
 ```
 sample/
-├── ConnectScreen      → Wallet connection UI
-├── VerifyingScreen    → Loading state
-├── AccessGrantedScreen → VIP content (has token)
-└── AccessDeniedScreen  → Paywall (no token)
+├── MainActivity.kt        → Navigation host
+├── MainViewModel.kt       → Business logic (balance verification)
+├── SampleApplication.kt   → SDK initialization
+└── ui/screens/
+    ├── ConnectScreen      → Wallet connection UI
+    ├── VerifyingScreen    → Loading state
+    ├── AccessGrantedScreen → VIP content (has >= 0.01 POL)
+    └── AccessDeniedScreen  → Paywall (insufficient POL)
 ```
 
 ### Running the Demo
@@ -237,7 +253,8 @@ sample/
 1. Clone the repository
 2. Open in Android Studio
 3. Replace `YOUR_PROJECT_ID` in `SampleApplication.kt`
-4. Run on device/emulator with MetaMask installed
+4. Run on device/emulator
+5. The demo checks if the wallet has at least **0.01 POL** on Polygon Amoy testnet
 
 ---
 
@@ -266,10 +283,12 @@ MobileWeb3SDK.init(context) {
 
 ### Supported Chains
 
-| Chain | Chain ID | Type |
-|-------|----------|------|
-| Polygon | 137 | Mainnet |
-| Polygon Mumbai | 80001 | Testnet |
+| Chain | Chain ID | Type | Currency |
+|-------|----------|------|----------|
+| Polygon | 137 | Mainnet | POL |
+| Polygon Amoy | 80002 | Testnet | POL |
+
+> **Note:** Mumbai testnet (80001) was deprecated in 2024 and replaced by Amoy.
 
 ---
 
@@ -297,7 +316,9 @@ MobileWeb3SDK.init(context) {
 - [x] Wallet connection via WalletConnect v2
 - [x] ERC-20 token gating
 - [x] ERC-721 NFT gating
-- [x] Polygon support
+- [x] Native balance check (POL/ETH)
+- [x] Polygon mainnet + Amoy testnet support
+- [x] Keccak-256 hashing (pure Kotlin implementation)
 
 ### v1.1 (Planned)
 - [ ] More chains (Ethereum, Base, Arbitrum)
